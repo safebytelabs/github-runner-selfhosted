@@ -47,11 +47,8 @@ jobs:
         images: safebytelabsjgonf/github-selfhosted-runner
         tags: |
           type=schedule
-          # type=ref,event=branch
-          # type=semver,pattern={{version}}
-          # type=semver,pattern={{major}}.{{minor}}
-          # type=semver,pattern={{major}}
           type=sha 
+          type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
 
     # https://github.com/sigstore/cosign-installer
     - name: Install cosign
@@ -84,15 +81,13 @@ jobs:
         tags: safebytelabsjgonf/github-selfhosted-runner
     
     # https://github.com/sigstore/cosign
-    - name: Sign the published Docker image
-      env:
-        # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-        # This step uses the identity token to provision an ephemeral certificate against the sigstore community Fulcio instance.
-        TAGS: ${{ steps.meta.outputs.tags }}
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        LABELS: ${{ steps.meta.outputs.labels }}
-      run: |
-        # echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-        echo "${TAGS}" | xargs -I {} cosign sign --yes {}
-        echo "${LABELS}
-
+    # - name: Sign the published Docker image
+    #   env:
+    #     # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+    #     # This step uses the identity token to provision an ephemeral certificate against the sigstore community Fulcio instance.
+    #     TAGS: ${{ steps.meta.outputs.tags }}
+    #     DIGEST: ${{ steps.build-and-push.outputs.digest }}
+    #     LABELS: ${{ steps.meta.outputs.labels }}
+    #   run: |
+    #     # echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+    #     echo "${LABELS}
