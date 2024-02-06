@@ -77,17 +77,8 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
+        context: .
+        platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/arm/v6
         push: true
-        tags: safebytelabsjgonf/github-selfhosted-runner
-    
-    # https://github.com/sigstore/cosign
-    # - name: Sign the published Docker image
-    #   env:
-    #     # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-    #     # This step uses the identity token to provision an ephemeral certificate against the sigstore community Fulcio instance.
-    #     TAGS: ${{ steps.meta.outputs.tags }}
-    #     DIGEST: ${{ steps.build-and-push.outputs.digest }}
-    #     LABELS: ${{ steps.meta.outputs.labels }}
-    #   run: |
-    #     # echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-    #     echo "${LABELS}
+        tags: safebytelabsjgonf/github-selfhosted-runner:latest
+
