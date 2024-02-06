@@ -80,7 +80,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
-        push: false
+        push: true
         tags: safebytelabsjgonf/github-selfhosted-runner
     
     # https://github.com/sigstore/cosign
