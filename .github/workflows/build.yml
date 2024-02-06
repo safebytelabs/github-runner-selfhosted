@@ -47,10 +47,10 @@ jobs:
         images: safebytelabsjgonf/github-selfhosted-runner
         tags: |
           type=schedule
-          type=ref,event=branch
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
+          # type=ref,event=branch
+          # type=semver,pattern={{version}}
+          # type=semver,pattern={{major}}.{{minor}}
+          # type=semver,pattern={{major}}
           type=sha 
 
     # https://github.com/sigstore/cosign-installer
@@ -92,6 +92,7 @@ jobs:
         DIGEST: ${{ steps.build-and-push.outputs.digest }}
         LABELS: ${{ steps.meta.outputs.labels }}
       run: |
-        echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+        # echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+        echo "${TAGS}" | xargs -I {} cosign sign --yes {}
         echo "${LABELS}
 
